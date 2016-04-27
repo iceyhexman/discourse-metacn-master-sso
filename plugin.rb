@@ -9,16 +9,16 @@ enabled_site_setting :master_sso_enabled
 
 after_initialize do
 
-  module ::MasterSSO
+  module ::MasterSso
     class Engine < ::Rails::Engine
       engine_name PLUGIN_NAME
-      isolate_namespace MasterSSO
+      isolate_namespace MasterSso
     end
   end
 
   require_dependency 'application_controller'
   require_dependency 'single_sign_on'
-  class MasterSSO::ControlsController < ::ApplicationController
+  class MasterSso::ControlsController < ::ApplicationController
     def sso
       payload ||= request.query_string
       if SiteSetting.master_sso_enabled?
@@ -59,11 +59,11 @@ after_initialize do
     end
   end
 
-  MasterSSO::Engine.routes.draw do
+  MasterSso::Engine.routes.draw do
     get "/sso" => "controls#sso"
   end
 
   Discourse::Application.routes.append do
-    mount ::MasterSSO::Engine, at: '/master_control'
+    mount ::MasterSso::Engine, at: '/master_control'
   end
 end
