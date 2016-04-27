@@ -3,25 +3,25 @@
 # author: Erick
 # version: 0.99
 
-PLUGIN_NAME = "master_sso".freeze
+PLUGIN_NAME = "master_hub".freeze
 
-enabled_site_setting :master_sso_enabled
+enabled_site_setting :master_hub_enabled
 
 after_initialize do
 
-  module ::MasterSso
+  module ::MasterHub
     class Engine < ::Rails::Engine
       engine_name PLUGIN_NAME
-      isolate_namespace MasterSso
+      isolate_namespace MasterHub
     end
   end
 
   require_dependency 'application_controller'
   require_dependency 'single_sign_on'
-  class MasterSso::ControlsController < ::ApplicationController
+  class MasterHub::HubController < ::ApplicationController
     def sso
       payload ||= request.query_string
-      if SiteSetting.master_sso_enabled?
+      if SiteSetting.master_hub_enabled?
         sso = SingleSignOn.parse(payload, SiteSetting.sso_secret)
         if current_user
           sso.name = current_user.name
@@ -47,23 +47,23 @@ after_initialize do
 
     private
     def grant_admin?
-      if SiteSetting.master_sso_admin_admin_required?
+      if SiteSetting.master_hub_admin_admin_required?
         current_user.admin?
       else
-        current_user.trust_level >= SiteSetting.master_sso_admin_tl_required
+        current_user.trust_level >= SiteSetting.master_hub_admin_tl_required
       end
     end
 
     def grant_moderator?
-      current_user.trust_level >= SiteSetting.master_sso_moderator_tl_required
+      current_user.trust_level >= SiteSetting.master_hub_moderator_tl_required
     end
   end
 
-  MasterSso::Engine.routes.draw do
-    get "/sso" => "controls#sso"
+  MasterHub::Engine.routes.draw do
+    get "/sso" => "hub#sso"
   end
 
   Discourse::Application.routes.append do
-    mount ::MasterSso::Engine, at: '/master_control'
+    mount ::MasterHub::Engine, at: '/masterhub'
   end
 end

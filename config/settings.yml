@@ -1,9 +1,9 @@
 plugins:
-  master_sso_enabled:
+  master_hub_enabled:
     default: true
-  master_sso_admin_admin_required:
+  master_hub_admin_admin_required:
     default: true
-  master_sso_admin_tl_required:
+  master_hub_admin_tl_required:
     default: 3
-  master_sso_moderator_tl_required:
+  master_hub_moderator_tl_required:
     default: 2
