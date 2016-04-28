@@ -64,6 +64,6 @@ after_initialize do
   end
 
   Discourse::Application.routes.append do
-    mount ::MasterHub::Engine, at: '/masterhub'
+    mount ::MasterHub::Engine, at: "/masterhub"
   end
 end
