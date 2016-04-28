@@ -19,6 +19,9 @@ after_initialize do
   require_dependency 'application_controller'
   require_dependency 'single_sign_on'
   class MasterHub::HubController < ::ApplicationController
+    skip_before_action :redirect_to_login_if_required
+    skip_before_action :preload_json, :check_xhr, only: ['sso']
+
     def sso
       payload ||= request.query_string
       if SiteSetting.master_hub_enabled?
