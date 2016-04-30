@@ -5,5 +5,7 @@ plugins:
     default: true
   master_hub_admin_tl_required:
     default: 3
+  master_hub_admin_whitelist:
+    default: ''
   master_hub_moderator_tl_required:
     default: 2

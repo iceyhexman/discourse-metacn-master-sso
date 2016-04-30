@@ -29,7 +29,7 @@ after_initialize do
         if current_user
           sso.name = current_user.name
           sso.username = current_user.username
-          sso.email = current_user.email
+          sso.email = "#{SecureRandom.hex}@sso.#{Discourse.current_hostname}"
           sso.external_id = current_user.id.to_s
           sso.admin = grant_admin?
           sso.moderator = grant_moderator?
@@ -50,6 +50,7 @@ after_initialize do
 
     private
     def grant_admin?
+      return true if SiteSetting.master_hub_admin_whitelist.split(',').include?(current_user.username)
       if SiteSetting.master_hub_admin_admin_required?
         current_user.admin?
       else
