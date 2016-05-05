@@ -12,7 +12,7 @@ after_initialize do
   require_dependency 'session_controller'
   require_dependency 'single_sign_on'
   ::SessionController.class_eval do
-    def sso_provider
+    def sso_provider(payload=nil)
       payload ||= request.query_string
       if SiteSetting.master_hub_enabled?
         sso = SingleSignOn.parse(payload, SiteSetting.sso_secret)
