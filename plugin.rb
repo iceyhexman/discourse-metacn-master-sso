@@ -7,6 +7,8 @@ PLUGIN_NAME = "master_hub".freeze
 
 enabled_site_setting :master_hub_enabled
 
+register_asset 'stylesheets/hub.scss'
+
 after_initialize do
 
   require_dependency 'session_controller'
