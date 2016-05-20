@@ -1,6 +1,8 @@
 plugins:
   master_hub_enabled:
     default: true
+  master_hub_enable_sso:
+    default: true
   master_hub_admin_admin_required:
     default: true
   master_hub_admin_tl_required:

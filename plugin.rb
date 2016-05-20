@@ -16,7 +16,7 @@ after_initialize do
   ::SessionController.class_eval do
     def sso_provider(payload=nil)
       payload ||= request.query_string
-      if SiteSetting.master_hub_enabled?
+      if SiteSetting.master_hub_enable_sso?
         sso = SingleSignOn.parse(payload, SiteSetting.sso_secret)
         if current_user
           sso.name = current_user.name
