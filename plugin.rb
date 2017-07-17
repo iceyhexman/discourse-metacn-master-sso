@@ -16,7 +16,7 @@ after_initialize do
   ::SessionController.class_eval do
     def sso_provider(payload=nil)
       payload ||= request.query_string
-      if SiteSetting.master_hub_enable_sso?
+      if SiteSetting.enable_sso_provider
         sso = SingleSignOn.parse(payload, SiteSetting.sso_secret)
         if current_user
           sso.name = current_user.name
@@ -26,6 +26,12 @@ after_initialize do
           sso.admin = grant_admin?
           sso.moderator = grant_moderator?
           sso.suppress_welcome_message = true
+
+          if sso.return_sso_url.blank?
+            render plain: "return_sso_url is blank, it must be provided", status: 400
+            return
+          end
+
           if request.xhr?
             cookies[:sso_destination_url] = sso.to_url(sso.return_sso_url)
           else
@@ -41,6 +47,7 @@ after_initialize do
     end
 
     private
+
     def grant_admin?
       return true if SiteSetting.master_hub_admin_whitelist.split(',').include?(current_user.username)
       if SiteSetting.master_hub_admin_admin_required?
