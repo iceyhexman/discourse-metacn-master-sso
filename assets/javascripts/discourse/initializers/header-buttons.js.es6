@@ -8,19 +8,11 @@ function initializeWithApi(api) {
 
     if (notInTopic) {
       return helper.attach('link', {
-        rawLabel: notMobile ? "测试站1" : "测试站",
+        rawLabel: notMobile ? "捐赠" : "捐赠",
         className: 'btn btn-default btn-small stage-site-link',
-        href: "https://master1.discoursecn.org/" });
-    }
-  });
-  api.decorateWidget('header-buttons:before', helper => {
-    const notInTopic = !helper.attrs.topic;
-
-    if (notMobile && notInTopic) {
-      return helper.attach('link', {
-        rawLabel: "2",
-        className: 'btn btn-default btn-small stage-site-link',
-        href: "https://master2.discoursecn.org/" });
+        //href: "javascript:$('.stage-site-link').click();"  如果有问题就换为注释里的
+        href: "javascript:;"
+      });
     }
   });
 }
